@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title><%= title%></title>
+  <link rel="shortcut icon" href="/assets/images/icons/favicon.ico"/>
+  <link rel="bookmark" href="/assets/images/icons/favicon.ico"/>
+  <link rel="stylesheet" href="/assets/plugins/layui/css/layui.css"/>
+  <script type="text/javascript" src="/assets/plugins/jquery.min.js"></script>
+  <style>
+    body {
+      background-color: #f0f2f5;
+      min-height: 100%;
+      background-image: url("/assets/images/picture/bg_login2.svg");
+      background-position: center 110px;
+      background-repeat: no-repeat;
+      background-size: 100%;
+    }
+    .login {
+      width: 380px;
+      margin: 50px auto;
+    }
+    .login-header {
+      width: 380px;
+      height: 100px;
+      margin: 0 auto;
+      background: url("/assets/images/picture/welcome.png") no-repeat;
+      background-size: 100%;
+    }
+  </style>
+</head>
+<body >
+  <div class="login-header"></div>
+  <div class="login">
+    <div class="layui-card">
+      <div class="layui-card-header"><%= title%></div>
+      <div class="layui-card-body">
+        <form class="layui-form layui-form-pane" lay-filter="login-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">账号</label>
+            <div class="layui-input-block">
+              <input type="text" name="account" required  lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+              <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="">
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-normal layui-btn-fluid" lay-filter="login-submit" lay-submit>增加</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="/assets/plugins/layui/layui.js"></script>
+<script type="text/javascript" src="/static/admin/FFAdmin.js"></script>
+<script>
+  layui.use(['element', 'form'], function () {
+      let element = layui.element;
+      let form = layui.form;
+
+      form.on('submit(login-submit)', function (data) {
+          $FFAdmin.request({
+              url: $FFAdmin.Url.adminLogin,
+              data: data.field,
+              userToken: false,
+              success: function (r) {
+                 if (r.code === '000') {
+                     $FFAdmin.message({
+                         message: r.message,
+                         type: 'success'
+                     });
+                     setTimeout(function () {
+                         window.location = '/admin';
+                     }, 1000)
+                 }
+              }
+          });
+          return false;
+      })
+  })
+</script>
+</html>
